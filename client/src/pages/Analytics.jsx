@@ -20,11 +20,11 @@ export default function Analytics(){
                  const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/habits/analytics`, {
                      headers: { Authorization: `Bearer ${token}` }
                  });
-                 console.log("Data received:", res.data); // CHECK THIS IN CONSOLE
+                 console.log("Data received:", res.data); 
                  setAnalytics(res.data);
              } catch (err) {
                  console.error("Fetch error:", err.response || err);
-                 setAnalytics({}); // Set to empty object so it stops "Loading"
+                 setAnalytics({}); 
              }
             }
         if (!analytics) return <p>Loading...</p>
