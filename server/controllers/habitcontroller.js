@@ -144,11 +144,20 @@ const getAnalytics = async (req, res) => {
             }
         }
 
-        const insight =
-            weekday > weekend
-                ? "You complete habits more on weekdays! 💪"
-                : "You complete habits more on weekends! 🎉"
+       
+    let insight;
+    if (weekday === 0 && weekend === 0) {
+        insight = "Start completing habits to see insights!";
+    } else if (weekday > weekend) {
+        insight = "You complete habits more on weekdays! 💪";
+    } else if (weekend > weekday) {
+        insight = "You complete habits more on weekends! 🎉";
+    } else {
+        insight = "You are consistent across the week! 🔥";
+    }
 
+
+    
         res.status(200).json({
             streakLeaderboard,
             completionsPerDay,
