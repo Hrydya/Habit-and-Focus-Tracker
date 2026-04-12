@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext,useEffect } from 'react'
 import { useNavigate,Link } from 'react-router-dom'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext.js'
@@ -26,7 +26,7 @@ export default function Login() {
         catch (err) {
             if (err.response) {
                 const status = err.response.status;
-                const message = err.response.data?.message;
+                const message = err.response.data?.msg;
 
                 if (status === 401) {
                     setError("Invalid email or password");
@@ -43,7 +43,9 @@ export default function Login() {
         }
        
     }
-
+    useEffect(()=>{
+        setError('');
+    },[])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-950">

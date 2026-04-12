@@ -59,6 +59,7 @@ export default function Dashboard() {
                 prev.map(habit=>
                 habit._id===id ?data.habit:habit
             ))
+            
         }
         catch (err) {
             setHabits(prevState);

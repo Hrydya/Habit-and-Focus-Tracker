@@ -1,4 +1,4 @@
-import {useState,useContext} from 'react'
+import {useState,useContext,useEffect} from 'react'
 import {useNavigate,Link} from 'react-router-dom'
 import axios from 'axios'
 import {AuthContext} from '../context/AuthContext'
@@ -31,7 +31,7 @@ export default function Register(){
         catch (err) {
             if (err.response) {
                 const status = err.response.status;
-                const message = err.response.data?.message;
+                const message = err.response.data?.msg;
 
                 if (status === 401) {
                     setError("Invalid email or password");
@@ -47,6 +47,9 @@ export default function Register(){
             }
         } 
     }
+     useEffect(()=>{
+            setError('');
+        },[])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-950">
             <div className="bg-gray-900 border border-gray-800 p-8 rounded-xl w-96">
