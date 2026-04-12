@@ -31,20 +31,25 @@ const getHabits = async (req, res) => {
     try {
         const { userId } = req.user;
         const habits = await Habit.find({ user: userId });
-        const today = new Date().toISOString().split('T')[0];
-
-        for (let habit of habits) {
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+        const yesterday = new Date()
+        yesterday.setDate(yesterday.getDate() - 1)
+        const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+        
+        await Promise.all(habits.map(async (habit) => {
             const lastDate = habit.completedDates[habit.completedDates.length - 1];
-            const lastDateStr = lastDate ? new Date(lastDate).toISOString().split('T')[0] : null;
+            const lastDateStr = lastDate ? new Date(lastDate).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }) : null;
 
-            if (lastDateStr !== today) {
+            if (lastDateStr !== today && habit.completed !== false) {
                 habit.completed = false;
-                await habit.save();
             }
-        }
+            if (lastDateStr !== today && lastDateStr !== yesterdayStr && habit.streak > 0) {
+                habit.streak = 0;
+            }
+            if (habit.isModified()) await habit.save();
+        }));
 
-        const updatedHabits = await Habit.find({ user: userId });
-        res.status(200).json({ habits: updatedHabits });
+        res.status(200).json({ habits });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
@@ -99,6 +104,10 @@ const getAnalytics = async (req, res) => {
             value: h.completedDates.length
         }))
 
+        const heatmapData = habits.map(h=>({
+            name:h.name,
+            completedDates :h.completedDates
+        }))
         //Last 7 days labels
         const last7Days = []
         for (let i = 6; i >= 0; i--) {
@@ -144,6 +153,7 @@ const getAnalytics = async (req, res) => {
             streakLeaderboard,
             completionsPerDay,
             habitCompletion,
+            heatmapData,
             insight
         })
 
