@@ -103,6 +103,7 @@ npm start
 
 ## Project Structure
 
+```text
 habit-tracker/
 ├── client/
 │   ├── src/
@@ -115,4 +116,3 @@ habit-tracker/
     ├── middleware/
     ├── models/
     └── routes/
-
