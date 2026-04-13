@@ -6,6 +6,8 @@ A full-stack productivity web app to build habits, track streaks, and stay focus
 Frontend: https://habit-and-focus-tracker.vercel.app/  
 Backend API: https://habit-and-focus-tracker.onrender.com/
 
+**Note:** 
+The backend is hosted on Render (free tier). It may take ~20–30 seconds to respond on the first request after inactivity, as the server goes to sleep when not used.
 ---
 
 ## Features
